@@ -6,5 +6,8 @@ class home {
     public function create(){
         echo "Day la trang tao moi";
     }
+    public function login(){
+          require_once '../app/views/home/login.php';
+    }
 }
 ?>
