@@ -6,6 +6,6 @@
     <title>SinhVien</title>
 </head>
 <body>
-    <h1>huy buoi to</h1>
+    <h1>sinh vien</h1>
 </body>
 </html>
