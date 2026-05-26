@@ -1,33 +1,26 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-class auth
-{
-    public $user = [
-        "namnh" => "0019468",
-        "admin" => "12345"
+session_start();
+class auth {
+    protected $user = [
+            "huy"=>"2005",
+            "admin"=>"123"
     ];
 
-    public function login()
-    {
-
-        if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            $username = $_POST["username"] ?? '';
-            $password = $_POST["password"] ?? '';
-
-            if (!$username || !$password) {
-                return "Username and password are required.";
-            }
-
-            if (isset($this->user[$username]) && $this->user[$username] == $password) {
+    public function login() {
+        if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
+            
+            $username = $_POST['username'] ?? '';
+            $password = $_POST['password'] ?? '';
+            
+            if(isset($this->user[$username]) && $this->user[$username] == $password) {
                 $_SESSION['username'] = $username;
-                header("Location: /home");
+                header("Location: /QLSINHVIEN/public/home/index");
                 exit();
             } else {
-                return "Invalid username or password.";
+                header('Location: /QLSINHVIEN/public/home/login');
+                exit();
             }
         }
-        return null;
     }
 }
+?>
