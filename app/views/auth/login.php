@@ -6,15 +6,13 @@
     <title>Document</title>
 </head>
 <body>
-    <form action=" /QLSV/public/auth/login" method="POSt">
-       <label for="">
-        username:
-        <input type="text" name="username" placeholder="Username"> <br>
-       </label>
-       <label for="">pass
-        <input type="password" name="password" placeholder="Password"><br>
-       </label>
-       <button type="submit">Login</button>
+    <h1> Login </h1>
+    <form action="/QLSINHVIEN/public/auth/login" method="POST">
+        <Label>UserName: </Label>
+        <input type="text" name="username" placeholder="userName"> <br>
+        <Label>Password: </Label>
+        <input type="text" name="password" placeholder="password"> <br>
+        <button type="submit">Login</button>
     </form>
 </body>
 </html>

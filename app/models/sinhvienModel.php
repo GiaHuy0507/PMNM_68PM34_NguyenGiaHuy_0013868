@@ -1,6 +1,7 @@
 <?php
     require_once '../app/core/DB.php';
     class sinhvienModel {
+        private $conn;
         public function __construct(){
             $db = new ConnectDB();
             $this->conn = $db->connect();
