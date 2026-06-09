@@ -7,17 +7,12 @@ class App
 
     public function __construct()
     {
-        // if (isset($_GET['url'])) {
-        //     echo($_GET['url']);
-        // }
         $urlProcessed = $this->UrlProcess();  //mảng url đã được xử lý
-       
         //var_dump($urlProcessed);
         if (isset($urlProcessed[0])) {
             if (file_exists('../app/controllers/' . $urlProcessed[0] . '.php')) {
                 $this->controller = $urlProcessed[0];
                 unset($urlProcessed[0]);
-
             }
         }
         require_once '../app/controllers/' . $this->controller . '.php';
@@ -31,7 +26,8 @@ class App
         $this->params = $urlProcessed ? array_values($urlProcessed) : [];
         call_user_func_array([$this->controller, $this->action], $this->params);
     }
-    public function UrlProcess(){
+    public function UrlProcess()
+    {
         if (isset($_GET['url'])) {
             return explode('/', filter_var(trim($_GET['url'], '/')));
         }

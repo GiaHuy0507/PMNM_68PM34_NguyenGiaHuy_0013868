@@ -1,19 +1,17 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
 require_once '../app/core/App.php';
-class authMiddleware
+class middleware
 {
-
-    public function handle()
+    function checklogin()
     {
-        $currentRoute = isset($_GET['url']) ? trim($_GET['url'], '/') : '';
-        $publicRoutes = ['home/login', 'auth/login'];
-
-        if (!isset($_SESSION['username']) && !in_array($currentRoute, $publicRoutes)) {
-            header("Location: /home/login");
+        $publicPages = [
+            '/PMNM_68PM4_NgoThiAiNhi_0020868/public/home/login',
+            '/PMNM_68PM4_NgoThiAiNhi_0020868/public/auth/login'
+        ];
+        if (!isset($_SESSION['username']) && !in_array($_SERVER['REQUEST_URI'], $publicPages)) {
+            header('Location: /QLSINHVIEN/public/home/login');
             exit();
         }
     }
 }
+?>
