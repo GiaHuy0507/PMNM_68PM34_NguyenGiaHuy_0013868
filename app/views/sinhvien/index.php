@@ -36,7 +36,7 @@
     <h1><?php echo $title ?></h1>
     
     <div style="margin-bottom: 15px; text-align: left;">
-        <a href="/PMNM_68PM4_NgoThiAiNhi_0020868/public/sinhvien/create" style="padding: 10px 15px; background-color: #28a745; color: white; text-decoration: none; border-radius: 4px; font-weight: bold;">+ Thêm sinh viên</a>
+        <a href="/QLSINHVIEN/public/sinhvien/create" style="padding: 10px 15px; background-color: #28a745; color: white; text-decoration: none; border-radius: 4px; font-weight: bold;">+ Thêm sinh viên</a>
     </div>
 
     <table>
@@ -54,8 +54,8 @@
                 <td> <?php echo $sv['giotinh']; ?> </td>
                 <td> <?php echo $sv['mssv']; ?> </td>
                 <td>
-                    <a href="/PMNM_68PM4_NgoThiAiNhi_0020868/public/sinhvien/edit/<?php echo $sv['id']; ?>" style="color: blue; text-decoration: none;">Sửa</a> |
-                    <a href="/PMNM_68PM4_NgoThiAiNhi_0020868/public/sinhvien/delete/<?php echo $sv['id']; ?>" style="color: red; text-decoration: none;" onclick="return confirm('Bạn có chắc chắn muốn xóa sinh viên này không?');">Xóa</a>
+                    <a href="/QLSINHVIEN/public/sinhvien/edit/<?php echo $sv['id']; ?>" style="color: blue; text-decoration: none;">Sửa</a> |
+                    <a href="/QLSINHVIEN/public/sinhvien/delete/<?php echo $sv['id']; ?>" style="color: red; text-decoration: none;" onclick="return confirm('Bạn có chắc chắn muốn xóa sinh viên này không?');">Xóa</a>
                 </td>
             </tr>
         <?php } ?>

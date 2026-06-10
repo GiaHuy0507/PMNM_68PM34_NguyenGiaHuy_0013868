@@ -64,21 +64,21 @@ class sinhvien extends Controller
             $sinhvienModel = $this->model('sinhvienModel');
             $sinhvienModel->insertSinhVien($sinhvien, $giotinh, $mssv);
         }
-        header('Location: /PMNM_68PM4_NgoThiAiNhi_0020868/public/sinhvien');
+        header('Location: /QLSINHVIEN/public/sinhvien');
         exit;
     }
 
     public function edit($id = null)
     {
         if (!$id) {
-            header('Location: /PMNM_68PM4_NgoThiAiNhi_0020868/public/sinhvien');
+            header('Location: /QLSINHVIEN/public/sinhvien');
             exit;
         }
         $sinhvienModel = $this->model('sinhvienModel');
         $student = $sinhvienModel->getSinhVienById($id);
 
         if (!$student) {
-            header('Location: /PMNM_68PM4_NgoThiAiNhi_0020868/public/sinhvien');
+            header('Location: /QLSINHVIEN/public/sinhvien');
             exit;
         }
 
@@ -99,7 +99,7 @@ class sinhvien extends Controller
             $sinhvienModel = $this->model('sinhvienModel');
             $sinhvienModel->updateSinhVien($id, $sinhvien, $giotinh, $mssv);
         }
-        header('Location: /PMNM_68PM4_NgoThiAiNhi_0020868/public/sinhvien');
+        header('Location: /QLSINHVIEN/public/sinhvien');
         exit;
     }
 
@@ -109,7 +109,7 @@ class sinhvien extends Controller
             $sinhvienModel = $this->model('sinhvienModel');
             $sinhvienModel->deleteSinhVien($id);
         }
-        header('Location: /PMNM_68PM4_NgoThiAiNhi_0020868/public/sinhvien');
+        header('Location: /QLSINHVIEN/public/sinhvien');
         exit;
     }
 }
