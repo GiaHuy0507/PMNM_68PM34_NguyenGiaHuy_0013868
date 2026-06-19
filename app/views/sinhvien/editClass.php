@@ -1,3 +1,118 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sửa Thông Tin Sinh Viên</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #28a745;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .btn-save {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background: #218838;
+        }
+
+        .btn-cancel {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-cancel:hover {
+            background: #c82333;
+        }
+
+        .error-box {
+            text-align: center;
+        }
+
+        .error-message {
+            color: red;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
 <style>
     .form-container {
         width: 100%;
@@ -11,83 +126,125 @@
 </style>
 
 <div class="form-container">
-        <h1>Sửa Thông Tin Lớp Học</h1>
+<h1>Sửa Thông Tin Sinh Viên</h1>
 
-        <?php if (isset($error)): ?>
-            <div style="color: #d9534f; background-color: #f2dede; padding: 10px; margin-bottom: 20px; border: 1px solid #ebccd1; border-radius: 4px; text-align: center;">
-                <?php echo $error; ?>
-            </div>
-        <?php endif; ?>
+<?php if (!empty($sinhvien)): ?>
 
-        <?php if (!empty($lop)): ?>
-            <form action="/QLSINHVIEN/public/home/update/<?php echo $lop['id']; ?>" method="POST">
+<form action="/QLSINHVIEN/public/sinhvien/update/<?php echo $sinhvien['id']; ?>" method="POST">
                 <input type="hidden"
                     name="id"
-                    value="<?php echo $lop['id']; ?>">
+                    value="<?php echo $sinhvien['id']; ?>">
 
+                <input type="hidden" name="id" value="<?php echo $sinhvien['id']; ?>">
                 <div class="mb-3">
-                    <label for="malop" class="form-label fw-bold">Mã Lớp <span class="text-danger">*</span></label>
+                    <label for="hoten" class="form-label fw-bold">Họ tên</label>
 
-                    <input
-                        type="text"
+                <div class="form-group">
+                    <label for="hoten">Họ tên sinh viên</label>
+<input
+type="text"
                         class="form-control"
-                        id="malop"
-                        name="malop"
-                        value="<?php echo htmlspecialchars($lop['malop']); ?>"
-                        required pattern=".*\S+.*" title="Mã lớp không được để trống">
-                </div>
+id="hoten"
+name="hoten"
+value="<?php echo htmlspecialchars($sinhvien['sinhvien']); ?>"
+                        required>
+                        required pattern=".*\S+.*" title="Họ tên không được để trống">
+</div>
 
+                <div class="form-group">
+                    <label for="gioitinh">Giới tính</label>
+                    <select id="gioitinh" name="gioitinh" required>
                 <div class="mb-3">
-                    <label for="tenlop" class="form-label fw-bold">Tên Lớp <span class="text-danger">*</span></label>
+                    <label for="gioitinh" class="form-label fw-bold">Giới tính</label>
 
-                    <input
-                        type="text"
+                    <select class="form-select" id="gioitinh" name="gioitinh" required>
+<option value="Nam"
+                            <?php echo ($sinhvien['giotinh'] === 'Nam') ? 'selected' : ''; ?>>
+                            <?php echo ($sinhvien['gioitinh'] == 'Nam') ? 'selected' : ''; ?>>
+Nam
+</option>
+
+                        <option value="Nữ"
+                            <?php echo ($sinhvien['giotinh'] === 'Nữ') ? 'selected' : ''; ?>>
+                        <option value="Nu"
+                            <?php echo ($sinhvien['gioitinh'] == 'Nu') ? 'selected' : ''; ?>>
+Nữ
+</option>
+
+                        <option value="Khac"
+                            <?php echo ($sinhvien['gioitinh'] == 'Khac') ? 'selected' : ''; ?>>
+                            Khác
+                        </option>
+</select>
+</div>
+
+                <div class="form-group">
+                    <label for="mssv">Mã số sinh viên</label>
+                <div class="mb-3">
+                    <label for="mssv" class="form-label fw-bold">Mã số sinh viên</label>
+
+<input
+type="text"
                         class="form-control"
-                        id="tenlop"
-                        name="tenlop"
-                        value="<?php echo htmlspecialchars($lop['tenlop']); ?>"
-                        required pattern=".*\S+.*" title="Tên lớp không được để trống">
+id="mssv"
+name="mssv"
+value="<?php echo htmlspecialchars($sinhvien['mssv']); ?>"
+                        required>
+                        required pattern=".*\S+.*" title="MSSV không được để trống">
                 </div>
 
                 <div class="mb-4">
-                    <label for="ghichu" class="form-label fw-bold">Ghi Chú</label>
+                    <label for="lop_id" class="form-label fw-bold">Lớp học</label>
+                    <select class="form-select" name="lop_id" id="lop_id" required>
+                        <?php foreach ($lophocs as $lop): ?>
+                            <option value="<?= $lop['id'] ?>" <?php echo ($sinhvien['lop_id'] == $lop['id']) ? 'selected' : ''; ?>>
+                                    <?= $lop['malop'] ?> - <?= $lop['tenlop'] ?>
+                                </option>
+                        <?php endforeach; ?>
 
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="ghichu"
-                        name="ghichu"
-                        value="<?php echo htmlspecialchars($lop['ghichu'] ?? ''); ?>">
-                </div>
+                    </select>
+</div>
 
+                <div class="form-actions">
+                    <a href="/QLSINHVIEN/public/sinhvien/index" class="btn btn-cancel">
                 <div class="d-flex gap-2 mt-4">
 
-                    <a href="/QLSINHVIEN/public/home/index"
+                    <a href="/QLSINHVIEN/public/sinhvien/index"
                         class="btn btn-secondary w-50 py-2">
-                        Hủy
-                    </a>
+Hủy
+</a>
 
+                    <button type="submit" class="btn btn-save">
                     <button type="submit"
                         class="btn btn-primary w-50 py-2">
-                        Lưu thay đổi
-                    </button>
+Lưu thay đổi
+</button>
 
-                </div>
+</div>
 
-            </form>
+</form>
 
-        <?php else: ?>
+<?php else: ?>
 
-            <div class="error-box">
+<div class="error-box">
 
-                <p class="error-message">
-                    Không tìm thấy lớp học.
-                </p>
+<p class="error-message">
+Không tìm thấy sinh viên.
+</p>
 
-                <a href="/QLSINHVIEN/public/home/index"
+                <a href="/QLSINHVIEN/public/sinhvien/index" class="btn btn-save">
+                    Quay lại
+                <a href="/QLSINHVIEN/public/sinhvien/index"
                     class="btn-back">
                     Quay lại danh sách
-                </a>
-            </div>
-        <?php endif; ?>
+</a>
+</div>
+
+<?php endif; ?>
+
+    </div>
+
+</body>
+
+</html>
 </div>
