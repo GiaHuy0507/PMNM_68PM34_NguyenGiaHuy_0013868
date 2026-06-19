@@ -79,6 +79,8 @@
             Bản ghi từ <?php echo $start_record; ?> đến <?php echo $end_record; ?> trong tổng <?php echo $totalrecord; ?> bản ghi (Tổng: <?php echo $totalpage; ?> trang)
         </div>
 
+
+        
         <nav aria-label="Page navigation" style="margin-top: 20px;">
             <ul class="pagination justify-content-center">
                 <?php 
@@ -94,7 +96,9 @@
                 if (isset($limit) && $limit != 3) {
                     $query_string .= ($query_string === '' ? '?' : '&') . 'limit=' . $limit;
                 }
+               
                 
+
                 for ($i = $start; $i <= $end; $i++) { ?>
                     <li class="page-item <?php echo ($i == $currentpage) ? 'active' : ''; ?>">
                         <a class="page-link" href="/QLSINHVIEN/public/home/index/<?php echo $i; ?><?php echo $query_string; ?>"><?php echo $i; ?></a>
