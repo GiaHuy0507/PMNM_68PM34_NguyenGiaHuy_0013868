@@ -11,98 +11,37 @@
 </style>
 
 <div class="form-container">
-        <h1>Sửa Thông Tin Sinh Viên</h1>
-        <?php if (!empty($sinhvien)): ?>
-            <form action="/QLSINHVIEN/public/sinhvien/update/<?php echo $sinhvien['id']; ?>" method="POST">
-                <input type="hidden"
-                    name="id"
-                    value="<?php echo $sinhvien['id']; ?>">
 
-                <div class="mb-3">
-                    <label for="hoten" class="form-label fw-bold">Họ tên</label>
+    <h2>Tạo lớp học mới</h2>
 
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="hoten"
-                        name="hoten"
-                        value="<?php echo htmlspecialchars($sinhvien['sinhvien']); ?>"
-                        required pattern=".*\S+.*" title="Họ tên không được để trống">
-                </div>
+    <?php if (isset($error)): ?>
+        <div style="color: #d9534f; background-color: #f2dede; padding: 10px; margin-bottom: 20px; border: 1px solid #ebccd1; border-radius: 4px; text-align: center;">
+            <?php echo $error; ?>
+        </div>
+    <?php endif; ?>
 
-                <div class="mb-3">
-                    <label for="gioitinh" class="form-label fw-bold">Giới tính</label>
+    <form action="/QLSINHVIEN/public/home/store" method="POST">
 
-                    <select class="form-select" id="gioitinh" name="gioitinh" required>
-                        <option value="Nam"
-                            <?php echo ($sinhvien['gioitinh'] == 'Nam') ? 'selected' : ''; ?>>
-                            Nam
-                        </option>
+        <div class="mb-3">
+            <label class="form-label fw-bold">Mã Lớp <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" name="malop" required pattern=".*\S+.*" title="Mã lớp không được để trống">
+        </div>
 
-                        <option value="Nu"
-                            <?php echo ($sinhvien['gioitinh'] == 'Nu') ? 'selected' : ''; ?>>
-                            Nữ
-                        </option>
+        <div class="mb-3">
+            <label class="form-label fw-bold">Tên Lớp <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" name="tenlop" required pattern=".*\S+.*" title="Tên lớp không được để trống">
+        </div>
 
-                        <option value="Khac"
-                            <?php echo ($sinhvien['gioitinh'] == 'Khac') ? 'selected' : ''; ?>>
-                            Khác
-                        </option>
-                    </select>
-                </div>
+        <div class="mb-4">
+            <label class="form-label fw-bold">Ghi Chú</label>
+            <input type="text" class="form-control" name="ghichu">
+        </div>
 
-                <div class="mb-3">
-                    <label for="mssv" class="form-label fw-bold">Mã số sinh viên</label>
+        <div class="d-flex gap-2 mt-4">
+            <a href="/QLSINHVIEN/public/home/index" class="btn btn-secondary w-50 py-2">Hủy</a>
+            <button type="submit" class="btn btn-primary w-50 py-2">Tạo lớp học</button>
+        </div>
 
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="mssv"
-                        name="mssv"
-                        value="<?php echo htmlspecialchars($sinhvien['mssv']); ?>"
-                        required pattern=".*\S+.*" title="MSSV không được để trống">
-                </div>
+    </form>
 
-                <div class="mb-4">
-                    <label for="lop_id" class="form-label fw-bold">Lớp học</label>
-                    <select class="form-select" name="lop_id" id="lop_id" required>
-                        <?php foreach ($lophocs as $lop): ?>
-                            <option value="<?= $lop['id'] ?>" <?php echo ($sinhvien['lop_id'] == $lop['id']) ? 'selected' : ''; ?>>
-                                    <?= $lop['malop'] ?> - <?= $lop['tenlop'] ?>
-                                </option>
-                        <?php endforeach; ?>
-
-                    </select>
-                </div>
-
-                <div class="d-flex gap-2 mt-4">
-
-                    <a href="/QLSINHVIEN/public/sinhvien/index"
-                        class="btn btn-secondary w-50 py-2">
-                        Hủy
-                    </a>
-
-                    <button type="submit"
-                        class="btn btn-primary w-50 py-2">
-                        Lưu thay đổi
-                    </button>
-
-                </div>
-
-            </form>
-
-        <?php else: ?>
-
-            <div class="error-box">
-
-                <p class="error-message">
-                    Không tìm thấy sinh viên.
-                </p>
-
-                <a href="/QLSINHVIEN/public/sinhvien/index"
-                    class="btn-back">
-                    Quay lại danh sách
-                </a>
-            </div>
-        <?php endif; ?>
 </div>
