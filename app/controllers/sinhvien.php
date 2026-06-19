@@ -1,116 +1,117 @@
 <?php
-require_once '../app/models/sinhvienModel.php';
+
+require_once '../app/models/lopModel.php';
 require_once '../app/core/Controller.php';
-class sinhvien extends Controller
-{
-    public function index()
-    {
-        $sinhvienModel = $this->model('sinhvienModel');
 
-        // 1. Khai báo số lượng trên mỗi trang
-        $limit = 10;
+class home extends Controller {
+    public function index($page = 1){
+        $currentpage = max(1, (int)$page);
+        $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 3;
+        $offset = ($currentpage - 1) * $limit;
+        
+        $search = isset($_GET['search']) ? trim($_GET['search']) : '';
+        
+        $lopModel = $this->model('lopModel');
+        $result = $lopModel->paging($limit, $offset, $search);
+        $lops = $result['lops'];
+        $totalpage = $result['totalpage'];
+        $totalrecord = $result['totalrecord'];
+        
+        $start_record = ($totalrecord > 0) ? $offset + 1 : 0;
+        $end_record = min($offset + $limit, $totalrecord);
+        
+        $this->view('layout/masterlayout', [
+            "viewname" => "home/indexClass",
+            "title" => "Danh sách lớp học",
+            "lops" => $lops,
+            "currentpage" => $currentpage,
+            "totalpage" => $totalpage,
+            "search" => $search,
+            "limit" => $limit,
+            "totalrecord" => $totalrecord,
+            "start_record" => $start_record,
+            "end_record" => $end_record
+        ]);
+    }
+    
+    public function create(){
+        $this->view('layout/masterlayout', [
+            "viewname" => "home/createClass",
+            "title" => "Tạo lớp học mới"
+        ]);
+    }
+    
+    public function store(){
+        $malop = $_POST['malop'];
+        $tenlop = $_POST['tenlop'];
+        $ghichu = isset($_POST['ghichu']) ? $_POST['ghichu'] : '';
+        $lopModel = $this->model('lopModel');
 
-        // 2. Lấy trang hiện tại từ URL (mặc định là trang 1)
-        $currentPage = 1;
-        if (isset($_GET['page'])) {
-            $currentPage = (int) $_GET['page'];
+        if ($lopModel->checkLopExist($malop, $tenlop)) {
+            $this->view('layout/masterlayout', [
+                "viewname" => "home/createClass",
+                "title" => "Tạo lớp học mới",
+                "error" => "Lớp học đã tồn tại!"
+            ]);
+            return;
+        }
+
+        $result = $lopModel->create($malop, $tenlop, $ghichu);
+        if($result) {
+            header("Location: /QLSINHVIEN/public/home/index");
         } else {
-            // Dự phòng: Tự bóc tách tham số page từ REQUEST_URI (trường hợp .htaccess nuốt mất $_GET)
-            $queryStr = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
-            if ($queryStr) {
-                parse_str($queryStr, $params);
-                if (isset($params['page'])) {
-                    $currentPage = (int) $params['page'];
-                }
-            }
+            echo "Tạo lớp học thất bại";
         }
-        if ($currentPage < 1)
-            $currentPage = 1;
-
-        // 3. Tính toán offset
-        $offset = ($currentPage - 1) * $limit;
-
-        // 4. Lấy dữ liệu sinh viên có phân trang
-        $sinhvien = $sinhvienModel->paging($limit, $offset);
-
-        // 5. Lấy tổng số sinh viên để tính tổng số trang
-        $totalRecords = $sinhvienModel->getTotalSinhVien();
-        $totalPages = ceil($totalRecords / $limit);
-
-        // 6. Trả dữ liệu sang view
-        $this->view("layout/masterlayout", [
-            "viewname" => "sinhvien/index",
-            "sinhvien" => $sinhvien,
-            "title" => "Danh sach sinh vien",
-            "currentPage" => $currentPage,
-            "totalPages" => $totalPages
+    }
+    
+    public function edit($id) {
+        $lopModel = $this->model('lopModel');
+        $lop = $lopModel->getById($id);
+        $this->view('layout/masterlayout', [
+            "viewname" => "home/editClass",
+            "lop" => $lop,
+            "title" => "Sửa thông tin lớp học"
         ]);
     }
-    public function create()
-    {
-        $this->view("layout/masterlayout", [
-            "viewname" => "sinhvien/create",
-            "title" => "Thêm thông tin sinh viên"
-        ]);
+    
+    public function update($id) {
+        $malop = $_POST['malop'];
+        $tenlop = $_POST['tenlop'];
+        $ghichu = isset($_POST['ghichu']) ? $_POST['ghichu'] : '';
+        $lopModel = $this->model('lopModel');
+
+        if ($lopModel->checkLopExist($malop, $tenlop, $id)) {
+            $lop = clone (object)$_POST;
+            $lop = ['id' => $id, 'malop' => $malop, 'tenlop' => $tenlop, 'ghichu' => $ghichu];
+            $this->view('layout/masterlayout', [
+                "viewname" => "home/editClass",
+                "lop" => $lop,
+                "title" => "Sửa thông tin lớp học",
+                "error" => "Lớp học đã tồn tại!"
+            ]);
+            return;
+        }
+
+        $result = $lopModel->update($id, $malop, $tenlop, $ghichu);
+        if($result) {
+            header("Location: /QLSINHVIEN/public/home/index");
+        } else {
+            echo "Cập nhật lớp học thất bại";
+        }
     }
-
-    public function store()
-    {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $sinhvien = $_POST['sinhvien'] ?? '';
-            $giotinh = $_POST['giotinh'] ?? '';
-            $mssv = $_POST['mssv'] ?? '';
-
-            $sinhvienModel = $this->model('sinhvienModel');
-            $sinhvienModel->insertSinhVien($sinhvien, $giotinh, $mssv);
+    
+    public function delete($id) {
+        $lopModel = $this->model('lopModel');
+        $result = $lopModel->delete($id);
+        if($result) {
+            header("Location: /QLSINHVIEN/public/home/index");
+        } else {
+            echo "Xóa lớp học thất bại";
         }
-        header('Location: /QLSINHVIEN/public/sinhvien');
-        exit;
     }
-
-    public function edit($id = null)
-    {
-        if (!$id) {
-            header('Location: /QLSINHVIEN/public/sinhvien');
-            exit;
-        }
-        $sinhvienModel = $this->model('sinhvienModel');
-        $student = $sinhvienModel->getSinhVienById($id);
-
-        if (!$student) {
-            header('Location: /QLSINHVIEN/public/sinhvien');
-            exit;
-        }
-
-        $this->view("layout/masterlayout", [
-            "viewname" => "sinhvien/edit",
-            "student" => $student,
-            "title" => "Sửa thông tin sinh viên"
-        ]);
-    }
-
-    public function update($id = null)
-    {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST' && $id) {
-            $sinhvien = $_POST['sinhvien'] ?? '';
-            $giotinh = $_POST['giotinh'] ?? '';
-            $mssv = $_POST['mssv'] ?? '';
-
-            $sinhvienModel = $this->model('sinhvienModel');
-            $sinhvienModel->updateSinhVien($id, $sinhvien, $giotinh, $mssv);
-        }
-        header('Location: /QLSINHVIEN/public/sinhvien');
-        exit;
-    }
-
-    public function delete($id = null)
-    {
-        if ($id) {
-            $sinhvienModel = $this->model('sinhvienModel');
-            $sinhvienModel->deleteSinhVien($id);
-        }
-        header('Location: /QLSINHVIEN/public/sinhvien');
-        exit;
+    
+    public function login(){
+        require_once '../app/views/auth/Login.php';
     }
 }
 ?>

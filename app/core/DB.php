@@ -1,7 +1,7 @@
 <?php
     class ConnectDB {
         private $host = "localhost";
-        private $port = "3307";
+        private $port = "3306";
         private $username = "root";
         private $password = "";
         private $database = "68pm34";
