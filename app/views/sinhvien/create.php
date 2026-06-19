@@ -1,23 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang tạo sinh viên</title>
-</head>
-<body>
-    <h2>Thêm mới sinh viên </h2>
-    <form action="/QLSINHVIEN/public/sinhvien/store" method="post">
-        <label for="hoten">Họ tên</label>
-        <input type="text" name="hoten" id="hoten">
-        <br>
-        <label for="gioitinh">Giới tính</label>
-        <input type="text" name="gioitinh" id="gioitinh">
-        <br>
-        <label for="mssv">MSSV</label>
-        <input type="text" name="mssv" id="mssv">
-        <br>
-        <button type="submit">Thêm mới</button>
 <style>
     .form-container {
         width: 100%;
@@ -81,8 +61,6 @@
             <button type="submit" class="btn btn-primary w-50 py-2">Thêm mới</button>
         </div>
 
-</form>
+    </form>
 
-</body>
-</html>
 </div>
